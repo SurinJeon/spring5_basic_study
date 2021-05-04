@@ -3,13 +3,19 @@ package spring5_basic_study.di;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 import java.util.Map.Entry;
 
-public class MainForAssembler {
-	private static Assembler assembler = new Assembler();
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+import spring5_basic_study.config.AppCtx;
+
+public class MainForSpring {
+	private static ApplicationContext ctx = null;
 
 	public static void main(String[] args) throws IOException {
+		ctx = new AnnotationConfigApplicationContext(AppCtx.class);
+		
 		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 		
 		while (true) {
@@ -40,7 +46,7 @@ public class MainForAssembler {
 			printHelp();	
 			return;
 		}
-		MemberRegisterService regSvc = assembler.getMemberRegisterService();
+		MemberRegisterService regSvc = ctx.getBean("memberRegSvc", MemberRegisterService.class);
 		
 		RegistRequest req = new RegistRequest();
 		req.setEmail(arg[1]);
@@ -68,7 +74,7 @@ public class MainForAssembler {
 			return;
 		}
 		
-		ChangePasswordService changePwdSvc = assembler.getChangePasswordService();
+		ChangePasswordService changePwdSvc = ctx.getBean("changePwdSvc", ChangePasswordService.class);
 		
 		try {
 			changePwdSvc.changePassword(arg[1], arg[2], arg[3]);
@@ -81,7 +87,7 @@ public class MainForAssembler {
 	}
 
 	private static void processListCommand() {
-		MemberListService listSvc = assembler.getMemberListService();
+		MemberListService listSvc = ctx.getBean("memberLstSvc", MemberListService.class);
 		
 		System.out.println("회원목록입니다.");
 		for(Entry<String, Member> e : listSvc.showMemberList().entrySet()) {

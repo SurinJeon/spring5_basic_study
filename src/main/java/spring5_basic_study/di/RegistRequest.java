@@ -1,5 +1,9 @@
 package spring5_basic_study.di;
 
+/**
+ * @author surin
+ * insert 되기 전까지는 Member 말고 RegistRequest로 받겠다는 뜻 << 오히려 하나 더 나눈 것
+ */
 public class RegistRequest {
 
 	private String email;

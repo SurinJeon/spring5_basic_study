@@ -11,7 +11,7 @@ public class ChangePasswordService {
 		}
 		
 		
-		member.changePassword(oldPwd, newPwd);
+		member.changePassword(oldPwd, newPwd); // 원래는 true면 update해야하기 때문에 try-catch 필요한데 일단은 그냥 한거임
 		
 		memberDao.update(member);
 	}

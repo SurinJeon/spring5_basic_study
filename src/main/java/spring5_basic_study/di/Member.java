@@ -18,9 +18,10 @@ public class Member {
 	}
 
 	public void changePassword(String oldPassword, String newPassword) {
-		if (!password.equals(oldPassword)) {
+		if (!password.equals(oldPassword)) { // 같지 않더라면 아래 예외를 던짐
 			throw new WrongIdPasswordException();
 		}
+		this.password = newPassword; // 같다면, 비번 변경 줄로 내려올 수 있음
 	}
 
 	public Long getId() {

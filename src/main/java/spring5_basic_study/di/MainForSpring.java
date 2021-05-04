@@ -3,7 +3,6 @@ package spring5_basic_study.di;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Map.Entry;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -14,7 +13,7 @@ public class MainForSpring {
 	private static ApplicationContext ctx = null;
 
 	public static void main(String[] args) throws IOException {
-		ctx = new AnnotationConfigApplicationContext(AppCtx.class);
+		ctx = new AnnotationConfigApplicationContext(AppConfImport.class);
 		
 		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 		
@@ -35,6 +34,12 @@ public class MainForSpring {
 				continue;
 			} else if (command.startsWith("list")) {
 				processListCommand();
+				continue;
+			} else if(command.startsWith("info")) {
+				processInfoCommand(command.split(" "));
+				continue;
+			} else if(command.startsWith("version")) {
+				processVersionCommand();
 				continue;
 			}
 			printHelp();
@@ -87,12 +92,31 @@ public class MainForSpring {
 	}
 
 	private static void processListCommand() {
-		MemberListService listSvc = ctx.getBean("memberLstSvc", MemberListService.class);
+		MemberListPrinter listPrinter = ctx.getBean("memberListPrinter", MemberListPrinter.class);
 		
-		System.out.println("회원목록입니다.");
-		for(Entry<String, Member> e : listSvc.showMemberList().entrySet()) {
-			System.out.println(e.getKey() + " : " + e.getValue());
+//		System.out.println("회원목록입니다.");
+//		for(Entry<String, Member> e : listSvc.showMemberList().entrySet()) {
+//			System.out.println(e.getKey() + " : " + e.getValue());
+//		}
+		
+		listPrinter.printAll();
+	}
+
+	private static void processInfoCommand(String[] arg) {
+		if(arg.length != 2) {
+			printHelp();
+			return;
 		}
+		
+		MemberInfoPrinter infoPrinter = ctx.getBean("memberInfoPrinter", MemberInfoPrinter.class);
+		infoPrinter.printMemberInfo(arg[1]);
+		
+	}
+	
+
+	private static void processVersionCommand() {
+		VersionPrinter versionPrinter = ctx.getBean("versionPrinter", VersionPrinter.class);
+		versionPrinter.print();
 	}
 
 	private static void printHelp() {
@@ -102,6 +126,7 @@ public class MainForSpring {
 		System.out.println("new 이메일 이름 암호 암호확인");
 		System.out.println("change 이메일 현재비번 변경비번");
 		System.out.println("목록을 확인하려면 list를 입력하세요.");
+		System.out.println("info 이메일");
 		System.out.println();
 
 	}

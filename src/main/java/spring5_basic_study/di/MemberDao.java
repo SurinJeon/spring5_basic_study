@@ -1,5 +1,6 @@
 package spring5_basic_study.di;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,6 +25,10 @@ public class MemberDao {
 
 	public Map<String, Member> getMember() {
 		return map;
+	}
+	
+	public Collection<Member> selectAll(){
+		return map.values();
 	}
 	
 }
